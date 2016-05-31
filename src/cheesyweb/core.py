@@ -4,6 +4,7 @@ Created on May 31, 2016
 @author: yglazner
 '''
 import bottle
+from .events import dispatch_event
 
 class App(object):
     '''
@@ -19,6 +20,11 @@ class App(object):
         self.views = []
         self.base = '/'
         self.running = False
+        
+        self._init_events()
+        
+    def _init_events(self):
+        self.app.post("/events/<id:int>")(dispatch_event)
         
     def start(self, host='127.0.0.1', port=80, debug=False, reloader=True):
         self.running = True
